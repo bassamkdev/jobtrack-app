@@ -1,4 +1,4 @@
-import {useQuery} from 'react-query'
+import {queryCache, useMutation, useQuery} from 'react-query'
 import {useFetchContext} from 'context/fetch-context'
 
 function useListItems(listId) {
@@ -16,8 +16,16 @@ function useListItems(listId) {
 }
 
 function useListItem(id) {
-  const lists = useListItems()
-  return lists.find(li => li.id === id) ?? null
+  const listItems = useListItems()
+  return listItems.find(item => item._id === id) ?? null
 }
 
-export {useListItems, useListItem}
+function useRemoveListItem(options) {
+  const {authAxios} = useFetchContext()
+  return useMutation(({itemId}) => authAxios.delete(`item/${itemId}`), {
+    onSettled: () => queryCache.invalidateQueries('list-items'),
+    ...options,
+  })
+}
+
+export {useListItems, useListItem, useRemoveListItem}
