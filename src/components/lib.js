@@ -2,9 +2,28 @@
 import {jsx, keyframes} from '@emotion/react'
 import styled from '@emotion/styled/macro'
 import * as colors from 'styles/colors'
+import * as mq from 'styles/media-queries'
 import {MenuList, MenuButton} from '@reach/menu-button'
 import {Link as RouterLink} from 'react-router-dom'
 import {FaSpinner} from 'react-icons/fa'
+import {Dialog as ReachDialog} from '@reach/dialog'
+
+const Dialog = styled(ReachDialog)({
+  maxWidth: '450px',
+  borderRadius: '3px',
+  paddingBottom: '3.5em',
+  boxShadow: '0 10px 30px -5px rgba(0, 0, 0, 0.2)',
+  margin: '20vh auto',
+  [mq.small]: {
+    width: '100%',
+    margin: '10vh auto',
+  },
+})
+
+const FormGroup = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+})
 
 const circleButtonVariants = {
   small: {
@@ -30,11 +49,11 @@ const CircleButton = styled.button(
     border: `1px solid ${colors.gray10}`,
     cursor: 'pointer',
     transition: `0.2s all`,
-    ':hover': {
-      borderColor: colors.indigo,
-      color: colors.indigo,
-      boxShadow: '0 4px 8px, rgba(0,0,0, 0.05)',
-    },
+    // ':hover': {
+    //   borderColor: colors.indigo,
+    //   color: colors.indigo,
+    //   boxShadow: '0 4px 8px, rgba(0,0,0, 0.05)',
+    // },
   },
   ({variant = 'small'}) => circleButtonVariants[variant],
 )
@@ -185,4 +204,6 @@ export {
   Input,
   Spinner,
   ErrorMessage,
+  Dialog,
+  FormGroup,
 }
