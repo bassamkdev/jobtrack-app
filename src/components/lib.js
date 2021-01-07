@@ -7,6 +7,48 @@ import {MenuList, MenuButton} from '@reach/menu-button'
 import {Link as RouterLink} from 'react-router-dom'
 import {FaSpinner} from 'react-icons/fa'
 import {Dialog as ReachDialog} from '@reach/dialog'
+import {
+  ListboxButton as ReachListboxButton,
+  ListboxList as ReachListboxList,
+  ListboxOption as ReachListboxOption,
+  ListboxPopover as ReachListboxPopover,
+} from '@reach/listbox'
+
+const buttonBase = {
+  padding: '10px 15px',
+  border: '0',
+  lineHeight: '1',
+  borderRadius: '3px',
+}
+
+const ListboxButton = styled(ReachListboxButton)(buttonBase, {
+  backgroundColor: colors.green,
+  color: 'white',
+  width: '100%',
+  cursor: 'pointer',
+  display: 'flex',
+  justifyContent: 'center',
+  ':hover': {
+    backgroundColor: colors.green20,
+  },
+})
+
+const ListboxList = styled(ReachListboxList)({
+  width: '100%',
+})
+
+const ListboxPopover = styled(ReachListboxPopover)({
+  borderRadius: '3px',
+  ':focus-within': {
+    outline: 'none !important',
+  },
+})
+
+const ListboxOption = styled(ReachListboxOption)({
+  ':hover,:active': {
+    backgroundColor: colors.gray,
+  },
+})
 
 const Dialog = styled(ReachDialog)({
   maxWidth: '450px',
@@ -62,19 +104,27 @@ const buttonVariants = {
   primary: {
     background: colors.indigo,
     color: colors.base,
+    ':hover': {
+      background: colors.indigoDarken10,
+    },
   },
   secondary: {
     background: colors.gray,
     color: colors.text,
+    ':hover': {
+      background: colors.gray10,
+    },
   },
 }
 
 const Button = styled.button(
+  buttonBase,
   {
-    padding: '10px 15px',
-    border: '0',
-    lineHeight: '1',
-    borderRadius: '3px',
+    transition: '.1s all',
+    boxShadow: '5px 4px 7px 1px rgba(0,0,0,.2)',
+    ':active': {
+      boxShadow: 'none',
+    },
   },
   ({variant = 'primary'}) => buttonVariants[variant],
 )
@@ -118,6 +168,7 @@ const inputStyles = {
   padding: '8px 12px',
 }
 const Input = styled.input({borderRadius: '3px'}, inputStyles)
+const Textarea = styled.textarea(inputStyles)
 
 const spin = keyframes({
   '0%': {transform: 'rotate(0deg)'},
@@ -206,4 +257,9 @@ export {
   ErrorMessage,
   Dialog,
   FormGroup,
+  ListboxButton,
+  ListboxList,
+  ListboxPopover,
+  ListboxOption,
+  Textarea,
 }
