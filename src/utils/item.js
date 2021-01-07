@@ -28,4 +28,12 @@ function useRemoveListItem(options) {
   })
 }
 
-export {useListItems, useListItem, useRemoveListItem}
+function useCreateListItem(options) {
+  const {authAxios} = useFetchContext()
+  return useMutation(data => authAxios.post('item', data), {
+    onSettled: () => queryCache.invalidateQueries('list-items'),
+    ...options,
+  })
+}
+
+export {useListItems, useListItem, useRemoveListItem, useCreateListItem}

@@ -56,4 +56,4 @@ function ModalContents({title, children, ...props}) {
   )
 }
 
-export {Modal, ModalDismissButton, ModalOpenButton, ModalContents}
+export {Modal, ModalDismissButton, ModalOpenButton, ModalContents, ModalContext}
