@@ -3,7 +3,8 @@ import {jsx, keyframes} from '@emotion/react'
 import styled from '@emotion/styled/macro'
 import * as colors from 'styles/colors'
 import * as mq from 'styles/media-queries'
-import {MenuList, MenuButton} from '@reach/menu-button'
+import {MenuList, MenuButton, MenuItem} from '@reach/menu-button'
+import {Tooltip} from '@reach/tooltip'
 import {Link as RouterLink} from 'react-router-dom'
 import {FaSpinner} from 'react-icons/fa'
 import {Dialog as ReachDialog} from '@reach/dialog'
@@ -21,37 +22,8 @@ const buttonBase = {
   borderRadius: '3px',
 }
 
-const ListboxButton = styled(ReachListboxButton)(buttonBase, {
-  backgroundColor: colors.green,
-  color: 'white',
-  width: '100%',
-  cursor: 'pointer',
-  display: 'flex',
-  justifyContent: 'center',
-  ':hover': {
-    backgroundColor: colors.green20,
-  },
-})
-
-const ListboxList = styled(ReachListboxList)({
-  width: '100%',
-})
-
-const ListboxPopover = styled(ReachListboxPopover)({
-  borderRadius: '3px',
-  ':focus-within': {
-    outline: 'none !important',
-  },
-})
-
-const ListboxOption = styled(ReachListboxOption)({
-  ':hover,:active': {
-    backgroundColor: colors.gray,
-  },
-})
-
 const Dialog = styled(ReachDialog)({
-  maxWidth: '450px',
+  maxWidth: '950px',
   borderRadius: '3px',
   paddingBottom: '3.5em',
   boxShadow: '0 10px 30px -5px rgba(0, 0, 0, 0.2)',
@@ -91,11 +63,6 @@ const CircleButton = styled.button(
     border: `1px solid ${colors.gray10}`,
     cursor: 'pointer',
     transition: `0.2s all`,
-    // ':hover': {
-    //   borderColor: colors.indigo,
-    //   color: colors.indigo,
-    //   boxShadow: '0 4px 8px, rgba(0,0,0, 0.05)',
-    // },
   },
   ({variant = 'small'}) => circleButtonVariants[variant],
 )
@@ -125,23 +92,97 @@ const Button = styled.button(
     ':active': {
       boxShadow: 'none',
     },
+    ':disabled': {
+      backgroundColor: colors.gray20,
+      color: colors.gray80,
+      boxShadow: 'none',
+      ':hover': {
+        backgroundColor: colors.gray20,
+      },
+    },
   },
   ({variant = 'primary'}) => buttonVariants[variant],
 )
 
+const textButtonBase = {
+  display: 'inline-block',
+  border: 'none',
+  minWidth: '150px',
+  background: 'none',
+  textTransform: 'uppercase',
+  color: colors.grayText,
+  transition: 'all .2s',
+  ':hover': {
+    background: colors.navDark,
+  },
+  ':disabled': {
+    cursor: 'not-allowed',
+  },
+}
+
+const textButtonVariants = {
+  large: {
+    fontSize: '20px',
+    fontWeight: 'bold',
+    borderBottom: `2px solid ${colors.grayText}`,
+  },
+  small: {
+    fontSize: '1rem',
+    fontWeight: 'light',
+    borderBottom: `1px solid ${colors.grayText}`,
+  },
+}
+
+const TextButton = styled.button(
+  textButtonBase,
+  ({variant = 'large'}) => textButtonVariants[variant],
+)
+
+const ListboxButton = styled(ReachListboxButton)(
+  textButtonBase,
+  textButtonVariants['small'],
+  {
+    width: '100%',
+    cursor: 'pointer',
+    display: 'flex',
+    justifyContent: 'center',
+  },
+)
+
+const ListboxList = styled(ReachListboxList)({
+  width: '100%',
+})
+
+const ListboxPopover = styled(ReachListboxPopover)({
+  borderRadius: '3px',
+  ':focus-within': {
+    outline: 'none !important',
+  },
+})
+
+const ListboxOption = styled(ReachListboxOption)({
+  ':hover,:active': {
+    backgroundColor: colors.gray,
+  },
+})
+
 const ProfileMenuButton = styled(MenuButton)(
   {
-    border: '2px solid white',
+    position: 'relative',
+    border: '2px solid transparent',
     borderRadius: '50%',
-    overflow: 'hidden',
     width: '2.5rem',
     height: '2.5rem',
     outline: 'none',
+    backgroundSize: 'cover',
+    transition: 'all .2s',
+    ':hover': {
+      border: '2px solid gray',
+    },
     ':focus': {
       outline: 'none',
       border: `2px solid ${colors.indigo}`,
     },
-    backgroundSize: 'contain',
   },
   ({background}) => ({
     backgroundImage: background
@@ -150,8 +191,44 @@ const ProfileMenuButton = styled(MenuButton)(
   }),
 )
 
+const moveInLeft = keyframes({
+  '0%': {
+    opacity: 0,
+    transform: 'translateX(30%)',
+  },
+  '80%': {
+    transform: 'translateX(10%)',
+  },
+  '100%': {
+    opacity: 1,
+    transform: 'translateX(0)',
+  },
+})
+
 const ProfileMenuList = styled(MenuList)({
-  borderRadius: '3px',
+  position: 'absolute',
+  top: '-38px',
+  right: '2px',
+  zIndex: 3,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  width: '200px',
+  height: '40px',
+  border: 'none',
+  borderRadius: '40px',
+  backgroundColor: '#2c3e4e',
+  color: 'white',
+  transition: 'all .2s',
+  animation: `${moveInLeft} ease-in 0.1s`,
+})
+
+const ProfileMenuItem = styled(MenuItem)({
+  transition: 'all .2s',
+  borderRadius: '30px',
+  ':hover': {
+    background: colors.gray80,
+  },
 })
 
 const Link = styled(RouterLink)({
@@ -169,6 +246,14 @@ const inputStyles = {
 }
 const Input = styled.input({borderRadius: '3px'}, inputStyles)
 const Textarea = styled.textarea(inputStyles)
+
+const JobListUl = styled.ul({
+  listStyle: 'none',
+  padding: '0',
+  display: 'grid',
+  gridTemplateRows: 'repeat(auto-fill, minmax(100px, 1fr))',
+  gridGap: '1em',
+})
 
 const spin = keyframes({
   '0%': {transform: 'rotate(0deg)'},
@@ -244,11 +329,32 @@ function FullPageErrorFallback({error}) {
   )
 }
 
+function TextToggleSwitch({icon, label, text}) {
+  return (
+    <Tooltip label="label">
+      <div
+        css={{
+          color: colors.grayText,
+          backgroundColor: 'none',
+          cursor: 'pointer',
+        }}
+        aria-label="label"
+      >
+        <div css={{display: 'inline-flex', alignItems: 'center'}}>
+          {icon}
+          <span css={{paddingLeft: '1rem', fontSize: '1.3rem'}}>{text}</span>
+        </div>
+      </div>
+    </Tooltip>
+  )
+}
+
 export {
   Button,
   CircleButton,
   ProfileMenuButton,
   ProfileMenuList,
+  ProfileMenuItem,
   Link,
   FullPageErrorFallback,
   FullPageSpinner,
@@ -262,4 +368,7 @@ export {
   ListboxPopover,
   ListboxOption,
   Textarea,
+  JobListUl,
+  TextButton,
+  TextToggleSwitch,
 }

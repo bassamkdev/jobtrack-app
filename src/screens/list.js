@@ -3,7 +3,6 @@ import {jsx} from '@emotion/react'
 import * as React from 'react'
 import * as colors from 'styles/colors'
 import {
-  CircleButton,
   FormGroup,
   Input,
   ErrorMessage,
@@ -11,38 +10,81 @@ import {
   Button,
   Textarea,
 } from 'components/lib'
-import ScrollableCard from 'components/card'
 import {useCreateListItem, useListItems} from 'utils/item'
 import {FaPlus} from 'react-icons/fa'
 import {Modal, ModalContents, ModalOpenButton} from 'components/modal'
 import {Listbox} from 'components/listbox'
 import {useAsync} from 'utils/hooks'
-import {useLists} from 'utils/list'
+import {useList, useLists} from 'utils/list'
 import {ModalContext} from 'components/modal'
+import {AccordionProvider} from 'components/accordion'
+import {
+  Card,
+  DefaultContent,
+  ExpandButton,
+  ExpandedContent,
+  ShrinkButton,
+  Toggle,
+  TopBar,
+  AccordianContent,
+} from 'components/card'
 
 function AddJobForm({onSubmit, submitButton}) {
   const [, setIsOpen] = React.useContext(ModalContext)
-  const mylistboxRef = React.createRef()
-  const lists = useLists()
+  const [listValue, setListValue] = React.useState('Select a List')
+  const [state, dispatch] = React.useReducer((s, a) => ({...s, ...a}), {
+    title: '',
+    companyName: '',
+    location: '',
+    list: '',
+    companyType: '',
+    employmentType: '',
+    url: '',
+  })
+  const [isEmptyField, setIsEmptyField] = React.useState(true)
   const {isLoading, isError, isSuccess, error, run, reset} = useAsync()
+
+  const lists = useLists()
+
+  React.useEffect(() => {
+    const {title, companyName, location, list, employmentType} = state
+    if (title && companyName && location && list && employmentType) {
+      setIsEmptyField(false)
+    } else {
+      setIsEmptyField(true)
+    }
+  }, [state])
+
+  function handleChange(e) {
+    const {value, id} = e.target
+    dispatch({[id]: value})
+  }
 
   function handleSubmit(event) {
     event.preventDefault()
-    const selectedListName = mylistboxRef.current.listboxValue
-    const selectedList = lists.find(list => list.name === selectedListName)
-    console.log(selectedList)
-    const {title, company, location, notes} = event.target.elements
+    const selectedList = lists.find(list => list.name === listValue)
+    const {
+      title,
+      companyName,
+      location,
+      companyType,
+      url,
+      employmentType,
+    } = state
+
     if (isError) {
       reset()
     } else {
       run(
         onSubmit({
-          title: title.value,
-          company: company.value,
-          location: location.value,
+          title,
+          companyName,
+          location,
           list: selectedList._id,
-          lastUpdated: new Date(),
-          notes: notes.value,
+          notes: event.target.elements.notes.value,
+          companyType,
+          employmentType,
+          url,
         }),
       )
     }
@@ -55,44 +97,70 @@ function AddJobForm({onSubmit, submitButton}) {
   }, [isSuccess, setIsOpen])
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      css={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'stretch',
-        '> div': {
-          margin: '10px auto',
-          width: '100%',
-          maxWidth: '300px',
-        },
-      }}
-    >
-      <FormGroup>
-        <label htmlFor="title">Title</label>
-        <Input id="title" />
-      </FormGroup>
-      <FormGroup>
-        <label htmlFor="company">Company</label>
-        <Input id="company" />
-      </FormGroup>
-      <FormGroup>
-        <label htmlFor="location">Location</label>
-        <Input id="location" />
-      </FormGroup>
-      <FormGroup>
-        <label htmlFor="list">List</label>
-        <Listbox ref={mylistboxRef} items={lists} />
-      </FormGroup>
+    <form onSubmit={handleSubmit}>
+      <div
+        css={{
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gridTemplateRows: '1fr 1fr 1fr 1fr',
+          gap: '0px 30px',
+          gridTemplateAreas: `    
+    ". ."
+    ". ."
+    ". ."
+    "notes notes"`,
+        }}
+      >
+        <FormGroup>
+          <label htmlFor="title">Title</label>
+          <Input id="title" onChange={handleChange} />
+        </FormGroup>
+        <FormGroup>
+          <label htmlFor="companyName">Company</label>
+          <Input id="companyName" onChange={handleChange} />
+        </FormGroup>
+        <FormGroup>
+          <label htmlFor="companyType">Company type</label>
+          <Input id="companyType" onChange={handleChange} />
+        </FormGroup>
+        <FormGroup>
+          <label htmlFor="url">Job url</label>
+          <Input id="url" onChange={handleChange} />
+        </FormGroup>
+        <FormGroup>
+          <label htmlFor="location">Location</label>
+          <Input id="location" onChange={handleChange} />
+        </FormGroup>
+        <FormGroup>
+          <label htmlFor="employmentType">Employment type</label>
+          <Input id="employmentType" onChange={handleChange} />
+        </FormGroup>
 
-      <FormGroup>
-        <label htmlFor="notes">Notes</label>
-        <Textarea id="notes" />
-      </FormGroup>
-      <div css={{display: 'flex', justifyContent: 'center'}}>
+        <FormGroup css={{gridArea: 'notes'}}>
+          <label htmlFor="notes">Notes</label>
+          <Textarea id="notes" css={{height: '6rem'}} />
+        </FormGroup>
+      </div>
+      <div
+        css={{
+          display: 'flex',
+          justifyContent: 'space-around',
+          marginTop: '3rem',
+        }}
+      >
+        <FormGroup>
+          <Listbox
+            items={lists}
+            listValue={listValue}
+            handleValueChange={value => {
+              setListValue(value)
+              dispatch({list: value})
+            }}
+          />
+        </FormGroup>
         {React.cloneElement(
           submitButton,
-          {type: 'submit'},
+          {type: 'submit', disabled: isEmptyField},
           ...(Array.isArray(submitButton.props.children)
             ? submitButton.props.children
             : [submitButton.props.children]),
@@ -105,44 +173,50 @@ function AddJobForm({onSubmit, submitButton}) {
 }
 
 function ListScreen({listId}) {
+  const list = useList(listId)
   const listItems = useListItems(listId)
   const [handleCreateListItem] = useCreateListItem({throwOnError: true})
+
   return (
     <div
       css={{
-        border: `1px solid ${colors.gray10}`,
-        borderRadius: '3px',
-        padding: '2rem',
-        display: 'flex',
-        flexWrap: 'wrap',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
+        position: 'relative',
+        width: '100%',
+        height: '100%',
+        borderLeft: `4px solid ${list.color}`,
       }}
     >
-      {listItems.length
-        ? listItems.map(listItem => (
-            <div
-              key={listItem._id}
-              css={{marginRight: '1rem', marginBottom: '1rem'}}
-            >
-              <ScrollableCard item={listItem} />
-            </div>
-          ))
-        : null}
       <div
         css={{
-          width: '300px',
-          height: '440px',
-          display: 'flex',
+          background: colors.gray,
+          height: '4em',
+          width: '100%',
+          display: 'inline-flex',
+          flexDirection: 'column',
           justifyContent: 'center',
-          alignItems: 'center',
+          alignItems: 'flex-start',
+          padding: '',
+          borderBottom: `1px solid ${colors.gray20}`,
+          color: colors.grayText,
+          fontFamily: 'lato, san-serif',
+          fontSize: '1.3rem',
+          position: 'sticky',
         }}
       >
         <Modal>
           <ModalOpenButton>
-            <CircleButton variant="large">
-              <FaPlus />
-            </CircleButton>
+            <div
+              css={{
+                paddingLeft: '1rem',
+                fontSize: '1.2rem',
+                display: 'inline-flex',
+                alignItems: 'center',
+                cursor: 'pointer',
+              }}
+            >
+              Create a new job card
+              <FaPlus css={{paddingLeft: '.5rem'}} />
+            </div>
           </ModalOpenButton>
           <ModalContents aria-label="Add job form" title="Add a new job">
             <AddJobForm
@@ -151,6 +225,55 @@ function ListScreen({listId}) {
             />
           </ModalContents>
         </Modal>
+      </div>
+      <div
+        css={{
+          padding: '2rem',
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr 1fr',
+          gridGap: '1rem',
+          justifyContent: 'center',
+          alignItems: 'center',
+          transition: '.2s all',
+          width: '100%',
+          maxHeight: '80%',
+          overflow: 'scroll',
+        }}
+      >
+        <AccordionProvider>
+          {listItems.length
+            ? listItems.map(listItem => (
+                <Card
+                  gridArea="1/1/3/3"
+                  eventKey={listItem._id}
+                  key={listItem._id}
+                  item={listItem}
+                >
+                  <Toggle
+                    element={TopBar}
+                    eventKey={listItem._id}
+                    expandButton={<ExpandButton />}
+                    shrinkButton={<ShrinkButton />}
+                  />
+                  <AccordianContent
+                    item={listItem}
+                    eventKey={listItem._id}
+                    defaultContent={<DefaultContent item={listItem} />}
+                    expandedContent={<ExpandedContent item={listItem} />}
+                  />
+                </Card>
+              ))
+            : null}
+        </AccordionProvider>
+        <div
+          css={{
+            width: '250px',
+            height: '250px',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        ></div>
       </div>
     </div>
   )

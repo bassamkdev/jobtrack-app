@@ -15,7 +15,7 @@ function useLists() {
 
 function useList(id) {
   const lists = useLists()
-  return lists.find(li => li.id === id) ?? null
+  return lists.find(li => li._id === id) ?? null
 }
 
 // function useUpdateList() {
@@ -31,12 +31,23 @@ function useList(id) {
 //   )
 // }
 
-function useCreateList(options) {
+function useRemoveList(options) {
   const {authAxios} = useFetchContext()
-  return useMutation(({listName}) => authAxios.post('list', {name: listName}), {
+  return useMutation(({listId}) => authAxios.delete(`list/${listId}`), {
     onSettled: () => queryCache.invalidateQueries('lists'),
     ...options,
   })
 }
 
-export {useLists, useList, useCreateList}
+function useCreateList(options) {
+  const {authAxios} = useFetchContext()
+  return useMutation(
+    ({listName, color}) => authAxios.post('list', {name: listName, color}),
+    {
+      onSettled: () => queryCache.invalidateQueries('lists'),
+      ...options,
+    },
+  )
+}
+
+export {useLists, useList, useCreateList, useRemoveList}

@@ -1,27 +1,20 @@
 /**@jsx jsx */
 import {jsx} from '@emotion/react'
-import * as React from 'react'
 import {ListboxInput as ReachListBox} from '@reach/listbox'
 import VisuallyHidden from '@reach/visually-hidden'
 import {ListboxButton, ListboxList, ListboxPopover, ListboxOption} from './lib'
 
-function ListBox({items}, ref) {
-  const [value, setValue] = React.useState('Select a list')
-
-  React.useImperativeHandle(ref, () => {
-    return {
-      listboxValue: value,
-    }
-  })
-
+function Listbox({items, variant, listValue, handleValueChange}) {
   return (
     <ReachListBox
       id="list"
       defaultValue={`list`}
-      onChange={value => setValue(value)}
+      onChange={value => handleValueChange(value)}
     >
       <VisuallyHidden>Select a list</VisuallyHidden>
-      <ListboxButton arrow>{value || 'List'}</ListboxButton>
+      <ListboxButton variant={variant} arrow>
+        {listValue}
+      </ListboxButton>
       <ListboxPopover>
         <ListboxList>
           {items.map(({name, _id}) => {
@@ -36,7 +29,5 @@ function ListBox({items}, ref) {
     </ReachListBox>
   )
 }
-
-const Listbox = React.forwardRef(ListBox)
 
 export {Listbox}

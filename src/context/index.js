@@ -23,7 +23,7 @@ function AppProvider({children}) {
         <Auth0Provider
           domain={process.env.REACT_APP_AUTH0_DOMAIN}
           clientId={process.env.REACT_APP_AUTH0_CLIENT_ID}
-          redirectUri={`${window.location.origin}/liked`}
+          redirectUri={`${window.location.origin}/discover`}
           audience={process.env.REACT_APP_AUTH0_AUDIENCE}
         >
           <FetchProvider>{children}</FetchProvider>
