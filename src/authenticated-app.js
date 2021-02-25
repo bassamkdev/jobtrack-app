@@ -15,10 +15,10 @@ import {
 } from 'components/lib'
 import {Menu} from '@reach/menu-button'
 import {
-  Routes,
+  BrowserRouter as Routes,
   Route,
   Link as RouterLink,
-  useMatch,
+  useRouteMatch as useMatch,
   useLocation,
 } from 'react-router-dom'
 import * as colors from 'styles/colors'
