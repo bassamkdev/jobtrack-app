@@ -4,8 +4,8 @@
   "private": true,
   "dependencies": {
     "@auth0/auth0-react": "^1.2.0",
-    "@emotion/react": "^11.1.4",
-    "@emotion/styled": "^11.0.0",
+    "@emotion/react": "^11.1.5",
+    "@emotion/styled": "^11.1.5",
     "@reach/dialog": "^0.12.1",
     "@reach/listbox": "^0.12.1",
     "@reach/menu-button": "^0.12.1",
