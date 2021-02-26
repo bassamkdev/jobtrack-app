@@ -15,7 +15,6 @@ import {
 } from 'components/lib'
 import {Menu} from '@reach/menu-button'
 import {
-  BrowserRouter as Routes,
   Route,
   Link as RouterLink,
   useRouteMatch as useMatch,
@@ -437,19 +436,21 @@ function Nav(params) {
 function AppRoutes() {
   const lists = useLists()
   return (
-    <Routes>
-      <Route path="/discover" element={<DiscoverJobsScreen />} />
+    <>
+      <Route path="/discover">
+        <DiscoverJobsScreen />
+      </Route>
       {lists.length
         ? lists.map(({name, _id}) => (
-            <Route
-              key={_id}
-              path={`/${name.replace(/\s/g, '&-&')}`}
-              element={<ListScreen listId={_id} />}
-            />
+            <Route key={_id} path={`/${name.replace(/\s/g, '&-&')}`}>
+              <ListScreen listId={_id} />
+            </Route>
           ))
         : null}
-      <Route path="*" element={<NotFoundScreen />} />
-    </Routes>
+      <Route path="*">
+        <NotFoundScreen />
+      </Route>
+    </>
   )
 }
 
