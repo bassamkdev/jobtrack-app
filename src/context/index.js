@@ -23,11 +23,7 @@ function AppProvider({children}) {
         <Auth0Provider
           domain={process.env.REACT_APP_AUTH0_DOMAIN}
           clientId={process.env.REACT_APP_AUTH0_CLIENT_ID}
-          redirectUri={`${
-            process.env.NODE_ENV === 'development'
-              ? 'http://localhost:3000'
-              : 'https://jobtrack-pwa.herokuapp.com/'
-          }/discover`}
+          redirectUri={`https://jobtrack-pwa.herokuapp.com/discover`}
           audience={process.env.REACT_APP_AUTH0_AUDIENCE}
         >
           <FetchProvider>{children}</FetchProvider>
