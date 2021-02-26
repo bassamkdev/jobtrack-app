@@ -29,7 +29,16 @@ function UnauthenticatedApp() {
           justifyContent: 'flex-end',
         }}
       >
-        <TextButton onClick={loginWithRedirect}>Login &rarr;</TextButton>
+        <TextButton
+          css={{
+            color: 'whitesmoke',
+            borderBottomColor: 'whitesmoke',
+            letterSpacing: '5px',
+          }}
+          onClick={loginWithRedirect}
+        >
+          Login &rarr;
+        </TextButton>
       </div>
       <div
         css={{
