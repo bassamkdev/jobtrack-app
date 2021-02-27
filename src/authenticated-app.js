@@ -1,49 +1,49 @@
 /** @jsx jsx */
 import {jsx} from '@emotion/react'
-
+import styled from '@emotion/styled/macro'
 import * as mq from 'styles/media-queries'
 import {SideBar} from 'layout/sidebar.layout'
 import {TopBar} from './layout/topbar.layout'
 import {AppRoutes} from './navigation/routes.navigaton'
 
+const AuthenticatedAppWrapper = styled.div({
+  margin: '0 auto',
+  width: '100%',
+  display: 'grid',
+  gridTemplateColumns: '1fr 3fr',
+  [mq.small]: {
+    gridTemplateColumns: '1fr',
+    gridTemplateRows: 'auto',
+    width: '100%',
+  },
+})
+
+const AppMainSection = styled.main({
+  width: '100%',
+  height: '100vh',
+  position: 'relative',
+  display: 'flex',
+  flexDirection: 'column',
+})
+
+const ScreensWrapper = styled.div({
+  height: '100%',
+  maxHeight: '100%',
+  width: '100%',
+  overflow: 'hidden',
+})
+
 function AuthenticatedApp() {
   return (
-    <div
-      css={{
-        margin: '0 auto',
-        width: '100%',
-        display: 'grid',
-        gridTemplateColumns: '1fr 3fr',
-        [mq.small]: {
-          gridTemplateColumns: '1fr',
-          gridTemplateRows: 'auto',
-          width: '100%',
-        },
-      }}
-    >
+    <AuthenticatedAppWrapper>
       <SideBar />
-      <main
-        css={{
-          width: '100%',
-          height: '100vh',
-          position: 'relative',
-          display: 'flex',
-          flexDirection: 'column',
-        }}
-      >
+      <AppMainSection>
         <TopBar />
-        <div
-          css={{
-            height: '100%',
-            maxHeight: '100%',
-            width: '100%',
-            overflow: 'hidden',
-          }}
-        >
+        <ScreensWrapper>
           <AppRoutes />
-        </div>
-      </main>
-    </div>
+        </ScreensWrapper>
+      </AppMainSection>
+    </AuthenticatedAppWrapper>
   )
 }
 

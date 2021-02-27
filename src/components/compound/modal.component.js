@@ -2,7 +2,7 @@
 import {jsx} from '@emotion/react'
 import * as React from 'react'
 import VisuallyHidden from '@reach/visually-hidden'
-import {CircleButton, Dialog} from './lib'
+import {CircleButton, Dialog} from '../lib'
 
 const callAll = (...fns) => (...args) => fns.forEach(fn => fn && fn(...args))
 

@@ -3,7 +3,7 @@ import UnauthenticatedApp from 'unauthenticated-app'
 import {useAuth0} from '@auth0/auth0-react'
 import {FullPageErrorFallback, FullPageSpinner} from 'components/lib'
 import {BrowserRouter as Router} from 'react-router-dom'
-import {UnderSizeScreen} from 'screens/undersize'
+import {UnderSizeScreen} from 'screens/undersize.screen'
 
 const AuthenticatedApp = React.lazy(() => import('./authenticated-app'))
 

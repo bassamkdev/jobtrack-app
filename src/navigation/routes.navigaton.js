@@ -2,9 +2,9 @@ import * as React from 'react'
 import {Route} from 'react-router-dom'
 
 import {useLists} from 'utils/list'
-import {DiscoverJobsScreen} from 'screens/discover'
-import {NotFoundScreen} from 'screens/not-found'
-import {ListScreen} from 'screens/list'
+import {DiscoverJobsScreen} from 'screens/discover.screen'
+import {NotFoundScreen} from 'screens/not-found.screen'
+import {ListScreen} from 'screens/list.screen'
 
 function AppRoutes() {
   const lists = useLists()

@@ -8,14 +8,15 @@ function NotFoundScreen() {
     <div
       css={{
         height: '100%',
-        display: 'grid',
+        display: 'flex',
+        flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'space-around',
       }}
     >
-      <div>
-        Sorry... nothing here. <Link to="/liked">Go Home</Link>
-      </div>
+      <img src="not-found.png" alt="page-not-found" />
+      <h3>This Page is Not on the Map</h3>
+      <Link to="/discover">Take me Home</Link>
     </div>
   )
 }

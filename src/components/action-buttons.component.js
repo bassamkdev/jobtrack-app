@@ -8,7 +8,7 @@ import * as colors from 'styles/colors'
 import {useAsync} from 'utils/hooks'
 import {CircleButton, Spinner} from 'components/lib'
 import {useLists} from 'utils/list'
-import {Listbox} from 'components/listbox'
+import {Listbox} from 'components/listbox.component'
 
 function TooltipButton({label, highlight, onClick, icon, ...rest}) {
   const {isLoading, isError, error, run, reset} = useAsync()

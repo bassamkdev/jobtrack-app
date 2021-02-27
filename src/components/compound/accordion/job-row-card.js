@@ -2,7 +2,7 @@
 import {jsx} from '@emotion/react'
 import * as colors from 'styles/colors'
 
-function Card({children}) {
+function JobRowCard({children}) {
   return (
     <div
       css={{
@@ -25,7 +25,7 @@ function Card({children}) {
   )
 }
 
-function CardHeader({children, ...props}) {
+function JobRowCardHeader({children, ...props}) {
   return (
     <div
       css={{
@@ -40,7 +40,7 @@ function CardHeader({children, ...props}) {
   )
 }
 
-function CardBody({children, ...props}) {
+function JobRowCardBody({children, ...props}) {
   return (
     <div
       css={{
@@ -55,4 +55,4 @@ function CardBody({children, ...props}) {
   )
 }
 
-export {Card, CardHeader, CardBody}
+export {JobRowCard, JobRowCardHeader, JobRowCardBody}

@@ -2,17 +2,17 @@
 import {jsx} from '@emotion/react'
 import styled from '@emotion/styled/macro'
 import * as React from 'react'
-// import PerfectScrollbar from 'react-perfect-scrollbar'
-import * as colors from 'styles/colors'
-import {ActionButtons} from 'components/action-buttons'
 import {ImLocation} from 'react-icons/im'
+
+import * as colors from 'styles/colors'
+import {NotesTextarea} from 'components/noteTextArea.component'
+import {ActionButtons} from 'components/action-buttons.component'
 import {FaBuilding, FaCompressAlt, FaExpandAlt, FaTimes} from 'react-icons/fa'
 import {formatDate} from 'utils/misc'
-import {CircleButton, ErrorMessage, Spinner, Textarea} from './lib'
+import {CircleButton, Spinner} from '../../lib'
 import {useUpdateListItem} from 'utils/item'
-import debounceFn from 'debounce-fn'
-import {useAccordionContext} from './accordion'
-import {Listbox} from './listbox'
+import {useAccordionContext} from './grid-accordion'
+import {Listbox} from '../../listbox.component'
 import {useList, useLists} from 'utils/list'
 
 const BasicCard = styled.div(
@@ -60,16 +60,6 @@ const Footer = styled.div({
   borderTopRightRadius: '4px',
 })
 
-const CardContent = styled.div({
-  position: 'relative',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'space-between',
-  padding: '0 30px 20px 30px',
-
-  marginBottom: '5rem',
-})
-
 const Title = styled.a({
   fontsize: '1.17em',
   fontWeight: 'bold',
@@ -101,56 +91,20 @@ const IconsTextBlock = styled.div({
   alignItems: 'flex-start',
 })
 
-function NotesTextarea({item}) {
-  const [mutate, {error, isError, isLoading}] = useUpdateListItem()
-
-  const deboucedMutate = React.useMemo(() => debounceFn(mutate, {wait: 300}), [
-    mutate,
-  ])
-
-  function handleNotesChange(e) {
-    deboucedMutate({id: item._id, notes: e.target.value})
-  }
-
-  return (
-    <React.Fragment>
-      <div>
-        <label
-          htmlFor="notes"
-          css={{
-            display: 'inline-block',
-            marginRight: '10px',
-            marginTop: '1rem',
-            marginBottom: '0.5rem',
-            fontWeight: 'bold',
-          }}
-        >
-          Notes
-        </label>
-        {isError ? (
-          <ErrorMessage
-            variant="inline"
-            error={error}
-            css={{fontSize: '0.7em'}}
-          />
-        ) : null}
-        {isLoading ? <Spinner /> : null}
-      </div>
-      <Textarea
-        id="notes"
-        defaultValue={item.notes}
-        onChange={handleNotesChange}
-        css={{width: '100%', minHeight: '300px'}}
-      />
-    </React.Fragment>
-  )
-}
+const CardActionsWrapper = styled.div({
+  position: 'absolute',
+  right: '0',
+  bottom: '2rem',
+  display: 'flex',
+  justifyContent: 'space-between',
+  paddingLeft: '1rem',
+  width: '100%',
+})
 
 function Card({children, gridArea = 1 / 1 / 3 / 3, eventKey, item}) {
   const {activeEventKey} = useAccordionContext()
   const lists = useLists()
   const list = useList(item.list)
-  console.log(list.color)
   const [listValue, setListValue] = React.useState(list.name)
   const [mutate, {isError, isLoading}] = useUpdateListItem()
 
@@ -166,17 +120,7 @@ function Card({children, gridArea = 1 / 1 / 3 / 3, eventKey, item}) {
       css={{gridArea: activeEventKey === eventKey ? gridArea : 'auto'}}
     >
       {children}
-      <div
-        css={{
-          position: 'absolute',
-          right: '0',
-          bottom: '2rem',
-          display: 'flex',
-          justifyContent: 'space-between',
-          paddingLeft: '1rem',
-          width: '100%',
-        }}
-      >
+      <CardActionsWrapper>
         <Listbox
           defaultValue={list.name}
           items={lists}
@@ -187,30 +131,9 @@ function Card({children, gridArea = 1 / 1 / 3 / 3, eventKey, item}) {
           handleValueChange={handleChange}
         />
         <ActionButtons item={item} />
-      </div>
+      </CardActionsWrapper>
       <Footer> Last updated {formatDate(new Date(item.updatedAt))}</Footer>
     </BasicCard>
-  )
-}
-
-function Toggle({
-  element: Component,
-  eventKey,
-  expandButton,
-  shrinkButton,
-  children,
-}) {
-  const {activeEventKey, onToggle} = useAccordionContext()
-  function handleToggle() {
-    onToggle(eventKey === activeEventKey ? null : eventKey)
-  }
-  return (
-    <Component>
-      {activeEventKey !== eventKey
-        ? React.cloneElement(expandButton, {onClick: handleToggle})
-        : React.cloneElement(shrinkButton, {onClick: handleToggle})}
-      {children}
-    </Component>
   )
 }
 
@@ -275,20 +198,8 @@ const DefaultContent = ({item}) => (
 
 const ExpandedContent = ({item}) => <NotesTextarea item={item} />
 
-function AccordianContent({item, eventKey, defaultContent, expandedContent}) {
-  const {activeEventKey} = useAccordionContext()
-  return (
-    <CardContent>
-      {defaultContent}
-      {activeEventKey === eventKey ? expandedContent : null}
-    </CardContent>
-  )
-}
-
 export {
   Card,
-  Toggle,
-  AccordianContent,
   TopBar,
   ShrinkButton,
   ExpandButton,

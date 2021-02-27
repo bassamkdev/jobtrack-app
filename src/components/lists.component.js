@@ -1,14 +1,73 @@
 /** @jsx jsx */
 import {jsx} from '@emotion/react'
+import styled from '@emotion/styled/macro'
 import * as React from 'react'
 import {FaTimesCircle, FaTrash, FaTrashAlt} from 'react-icons/fa'
 import {Spinner, Button} from 'components/lib'
 
 import {NavLink} from 'navigation/link.navigation'
 import {useLists, useRemoveList} from 'utils/list'
-import {Modal, ModalContents, ModalOpenButton} from 'components/modal'
+import {
+  Modal,
+  ModalContents,
+  ModalOpenButton,
+} from 'components/compound/modal.component'
 import * as colors from 'styles/colors'
 import * as mq from 'styles/media-queries'
+
+const ListsWrapper = styled.nav({
+  position: 'sticky',
+  top: '4px',
+  padding: '1em 0 1.5em 1.5em',
+  border: `none`,
+  width: '100%',
+  [mq.small]: {
+    position: 'static',
+    top: 'auto',
+  },
+})
+
+const ListItem = styled.li({
+  position: 'relative',
+  ':hover>:last-child': {
+    display: 'block',
+    color: colors.grayText,
+    cursor: 'pointer',
+    ':hover': {
+      color: 'crimson',
+    },
+  },
+})
+
+const OpenButton = styled.button({
+  position: 'absolute',
+  top: '50%',
+  transform: 'translateY(-50%)',
+  right: '8px',
+  display: 'none',
+  border: 'none',
+  background: 'none',
+})
+
+const DeleteButton = styled(Button)({
+  width: '100px',
+  marginTop: '10px',
+  background: 'none',
+  color: colors.danger,
+  border: `1px solid ${colors.danger}`,
+  boxShadow: 'none',
+  ':hover': {
+    background: 'pink',
+  },
+})
+
+const ContentWrapper = styled.div({
+  width: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+})
 
 function Lists(params) {
   const lists = useLists()
@@ -35,19 +94,7 @@ function Lists(params) {
   }, [isSuccess, lists])
 
   return (
-    <nav
-      css={{
-        position: 'sticky',
-        top: '4px',
-        padding: '1em 0 1.5em 1.5em',
-        border: `none`,
-        width: '100%',
-        [mq.small]: {
-          position: 'static',
-          top: 'auto',
-        },
-      }}
-    >
+    <ListsWrapper>
       <ul
         css={{
           listStyle: 'none',
@@ -60,20 +107,7 @@ function Lists(params) {
         {lists.length
           ? lists.map(list => {
               return (
-                <li
-                  key={list._id}
-                  css={{
-                    position: 'relative',
-                    ':hover>:last-child': {
-                      display: 'block',
-                      color: colors.grayText,
-                      cursor: 'pointer',
-                      ':hover': {
-                        color: 'crimson',
-                      },
-                    },
-                  }}
-                >
+                <ListItem key={list._id}>
                   <NavLink
                     list={list}
                     to={`/${list.name.replace(/\s/g, '&-&')}`}
@@ -82,30 +116,12 @@ function Lists(params) {
                   </NavLink>
                   <Modal>
                     <ModalOpenButton>
-                      <button
-                        css={{
-                          position: 'absolute',
-                          top: '50%',
-                          transform: 'translateY(-50%)',
-                          right: '8px',
-                          display: 'none',
-                          border: 'none',
-                          background: 'none',
-                        }}
-                      >
+                      <OpenButton>
                         <FaTrashAlt />
-                      </button>
+                      </OpenButton>
                     </ModalOpenButton>
                     <ModalContents aria-label="Delete confirmation alert">
-                      <div
-                        css={{
-                          width: '100%',
-                          display: 'flex',
-                          flexDirection: 'column',
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                        }}
-                      >
+                      <ContentWrapper>
                         <h3>
                           Deleting a list will delete all the job cards inside
                           that list, Are you sure you want to Delete the
@@ -114,18 +130,7 @@ function Lists(params) {
                           >{` ${list.name}`}</strong>{' '}
                           list?
                         </h3>
-                        <Button
-                          css={{
-                            width: '100px',
-                            marginTop: '10px',
-                            background: 'none',
-                            color: colors.danger,
-                            border: `1px solid ${colors.danger}`,
-                            boxShadow: 'none',
-                            ':hover': {
-                              background: 'pink',
-                            },
-                          }}
+                        <DeleteButton
                           onClick={() => handleRemoveList(list._id)}
                         >
                           {isLoading ? (
@@ -135,16 +140,16 @@ function Lists(params) {
                           ) : (
                             <FaTrash />
                           )}
-                        </Button>
-                      </div>
+                        </DeleteButton>
+                      </ContentWrapper>
                     </ModalContents>
                   </Modal>
-                </li>
+                </ListItem>
               )
             })
           : null}
       </ul>
-    </nav>
+    </ListsWrapper>
   )
 }
 
