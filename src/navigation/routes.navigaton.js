@@ -20,7 +20,7 @@ function AppRoutes() {
             </Route>
           ))
         : null}
-      <Route path="*">
+      <Route path="*" exact>
         <NotFoundScreen />
       </Route>
     </>

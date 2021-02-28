@@ -9,7 +9,6 @@ const AuthenticatedApp = React.lazy(() => import('./authenticated-app'))
 
 function App() {
   const {isAuthenticated, isLoading, error} = useAuth0()
-
   if (isLoading) {
     return <FullPageSpinner />
   }

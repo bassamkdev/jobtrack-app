@@ -63,4 +63,4 @@ function useFetchContext() {
   return context
 }
 
-export {FetchProvider, useFetchContext}
+export {useFetchContext, FetchProvider}
