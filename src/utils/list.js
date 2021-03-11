@@ -10,7 +10,6 @@ function useLists() {
       return authAxios.get('list').then(response => response.data)
     },
   })
-
   return lists ?? []
 }
 

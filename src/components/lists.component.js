@@ -4,6 +4,7 @@ import styled from '@emotion/styled/macro'
 import * as React from 'react'
 import {FaTimesCircle, FaTrash, FaTrashAlt} from 'react-icons/fa'
 import {Spinner, Button} from 'components/lib'
+import { useHistory } from "react-router-dom";
 
 import {NavLink} from 'navigation/link.navigation'
 import {useLists, useRemoveList} from 'utils/list'
@@ -69,12 +70,11 @@ const ContentWrapper = styled.div({
   alignItems: 'center',
 })
 
-function Lists(params) {
+function Lists() {
   const lists = useLists()
-
   const [remove, {isSuccess, isError, isLoading, reset}] = useRemoveList()
+  const history = useHistory()
   function handleRemoveList(listId) {
-    console.log(listId)
     if (isError) {
       reset()
     } else {
@@ -88,10 +88,10 @@ function Lists(params) {
         list => list.name === window.location.pathname.slice(1),
       )
       if (!match && window.location.pathname !== '/discover') {
-        window.location.href = 'discover'
+        history.push('/discover')
       }
     }
-  }, [isSuccess, lists])
+  }, [history, isSuccess, lists])
 
   return (
     <ListsWrapper>
@@ -131,10 +131,11 @@ function Lists(params) {
                           list?
                         </h3>
                         <DeleteButton
+                          role='delete-list'
                           onClick={() => handleRemoveList(list._id)}
                         >
                           {isLoading ? (
-                            <Spinner />
+                            <Spinner/>
                           ) : isError ? (
                             <FaTimesCircle />
                           ) : (
