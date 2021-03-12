@@ -59,6 +59,7 @@ function AddListForm({onSubmit, setIsActive}) {
           onKeyDown={handleEscape}
           autoFocus
           id="name"
+          type='text'
           placeholder="list name"
           value={listName}
           onChange={handleInputChange}
@@ -71,9 +72,11 @@ function AddListForm({onSubmit, setIsActive}) {
         />
 
         <CirclePicker
+              data-testid='hello'
+
           css={{width: '100%', margin: '2em 0'}}
           color={color}
-          onChangeComplete={({hex}) => setColor(hex)}
+          onChange={({hex}) => setColor(hex)}
         />
         {isError ? <ErrorMessage error={error} /> : null}
         <TextButton
