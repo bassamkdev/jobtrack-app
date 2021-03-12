@@ -43,6 +43,7 @@ function FetchProvider({children}) {
       const code = error && error.response ? error.response.status : 0
       if (code === 401) {
         getAccessToken()
+        return Promise.reject({message: 'Please re-authenticate'})
       }
       return Promise.reject(error)
     },
