@@ -24,8 +24,11 @@ function buildItem(overrides) {
         title: faker.name.jobTitle(),
         jobId: faker.random.uuid(),
         companyName: faker.company.companyName(),
+        companyType: faker.company.companySuffix(),
+        employmentType: 'fulltime',
         url: faker.internet.url(),
-        location: faker.address.city,
+        location: faker.address.city(),
+        notes: faker.lorem.paragraph(),
         ...overrides
     }
 }

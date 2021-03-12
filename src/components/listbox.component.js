@@ -7,6 +7,7 @@ import {ListboxButton, ListboxList, ListboxPopover, ListboxOption} from './lib'
 function Listbox({items, variant, listValue, handleValueChange}) {
   return (
     <ReachListBox
+      role='listbox'
       id="list"
       defaultValue={`list`}
       onChange={value => handleValueChange(value)}
@@ -15,11 +16,11 @@ function Listbox({items, variant, listValue, handleValueChange}) {
       <ListboxButton variant={variant} arrow>
         {listValue}
       </ListboxButton>
-      <ListboxPopover>
-        <ListboxList>
+      <ListboxPopover data-testid='popover'>
+        <ListboxList data-testid='listbox-lists'>
           {items.map(({name, _id}) => {
             return (
-              <ListboxOption aria-selected={false} key={_id} value={name}>
+              <ListboxOption aria-selected={false} key={_id} value={name} data-testid='listbox-option'>
                 {name}
               </ListboxOption>
             )

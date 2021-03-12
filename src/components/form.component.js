@@ -110,6 +110,7 @@ function AddJobForm({onSubmit, submitButton}) {
     employmentType: '',
     url: '',
   })
+
   const [isEmptyField, setIsEmptyField] = React.useState(true)
   const {isLoading, isError, isSuccess, error, run, reset} = useAsync()
 
@@ -117,6 +118,7 @@ function AddJobForm({onSubmit, submitButton}) {
 
   React.useEffect(() => {
     const {title, companyName, location, list, employmentType} = state
+    // console.log({title, companyName, location, list, employmentType})
     if (title && companyName && location && list && employmentType) {
       setIsEmptyField(false)
     } else {
