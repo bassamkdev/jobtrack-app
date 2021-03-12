@@ -60,12 +60,11 @@ function DiscoverJobsScreen() {
     return () => refetchJobSearchQuery()
   }, [refetchJobSearchQuery])
 
-  function handleSubmit(event) {
-    event.preventDefault()
+  function handleSubmit(title, location) {
     setQueried(true)
     dispatch({
-      description: event.target.elements.description.value,
-      location: event.target.elements.location.value,
+      description: title,
+      location,
     })
   }
   return (

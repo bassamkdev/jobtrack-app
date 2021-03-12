@@ -1,6 +1,6 @@
 import * as React from 'react'
-import {render as rtlRender, screen, act, within} from '@testing-library/react'
-import {AddListForm, AddJobForm} from '../form.component'
+import {render, screen, act, within} from '@testing-library/react'
+import {AddListForm, AddJobForm, SearchForm} from '../form.component'
 import  "jest-axe/extend-expect"
 import userEvent from '@testing-library/user-event';
 import { buildItem, buildList } from "../../test/generate";
@@ -8,13 +8,14 @@ import { Modal } from "../compound/modal.component";
 import { useLists } from "../../utils/list";
 
 
+
 jest.mock('../../utils/list')
 
 test('addListForm renders a form with list name input, color picker, and a submit button', async() => {
   const testListName = 'LIST_NAME'
-  const onSubmit = jest.fn(() => {return new Promise((res,rej) => {res('success')})})
+  const onSubmit = jest.fn().mockResolvedValue()
 
-    rtlRender(<AddListForm onSubmit={onSubmit} />)
+    render(<AddListForm onSubmit={onSubmit} />)
 
     const input = screen.getByRole('textbox')
     const colorCircle = screen.getAllByTitle(/#/i)[0]
@@ -31,15 +32,15 @@ test('addListForm renders a form with list name input, color picker, and a submi
     expect(onSubmit).toHaveBeenCalledWith({listName:testListName, color:colorCircle.title })
 })
 
-test('AddJobForm has renders fields and buttons and submits the form', async() => {
+test('AddJobForm has all fields and buttons and submits the form', async() => {
   const testlists = [buildList(), buildList(), buildList()]
   const {title, companyName, companyType, url, location, employmentType, notes} = buildItem()
   const mockOnSubmit = jest.fn().mockResolvedValue()
   const mockSubmitButton = <button variant="primary">Submit</button>
   useLists.mockReturnValue(testlists)
 
-  rtlRender(<Modal><AddJobForm submitButton={mockSubmitButton} onSubmit={mockOnSubmit}/></Modal>)
-   
+  render(<Modal><AddJobForm submitButton={mockSubmitButton} onSubmit={mockOnSubmit}/></Modal>)
+
   const submitButton = screen.getByRole('button', {  name: /submit/i})
   expect(submitButton).toBeDisabled()
   
@@ -70,4 +71,20 @@ userEvent.selectOptions(listbox, testlists[0].name)
     notes, 
     title, 
     url})
+})
+
+test('Search form has fields and submits the query', async() => {
+  const testQuery = {
+    title: 'TEST_TITLE',
+    location: 'TEST_LOCATION'
+  }
+  const mockOnSubmit = jest.fn()
+  render(<SearchForm onSubmit={mockOnSubmit} isError={false} isLoading={false}/>)
+
+  userEvent.type(screen.getByLabelText(/job title search input/i), testQuery.title)
+  userEvent.type(screen.getByLabelText(/job location search input/i), testQuery.location)
+  userEvent.click( screen.getByRole('button', {name: /search button/i}))
+
+  expect(mockOnSubmit).toHaveBeenCalledWith(testQuery.title, testQuery.location)
+  expect(mockOnSubmit).toHaveBeenCalledTimes(1)
 })

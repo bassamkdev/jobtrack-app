@@ -275,12 +275,19 @@ const SearchButton = styled.button({
 })
 
 function SearchForm({onSubmit, isError, isLoading}) {
+
+  function handleSubmit(e) {
+    e.preventDefault()
+    const title = e.target.elements.title.value
+    const location = e.target.elements.location.value
+    onSubmit(title,location)
+  }
   return (
-    <SearchFormWrapper onSubmit={onSubmit}>
-      <SearchInput placeholder="Job title..." id="description" type="search" />
-      <SearchInput placeholder="Location..." id="location" type="search" />
-      <Tooltip label="Search job title">
-        <SearchButton type="submit">
+    <SearchFormWrapper onSubmit={handleSubmit}>
+      <SearchInput placeholder="Job title..." id="title" type="search" aria-label='job title search input' />
+      <SearchInput placeholder="Location..." id="location" type="search" aria-label='job location search input' />
+      <Tooltip label="Search job">
+        <SearchButton type="submit" aria-label='search button' >
           {isLoading ? (
             <Spinner />
           ) : isError ? (
