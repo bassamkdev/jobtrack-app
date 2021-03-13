@@ -39,7 +39,7 @@ test('AddJobForm has all fields and buttons and submits the form', async() => {
   const mockSubmitButton = <button variant="primary">Submit</button>
   useLists.mockReturnValue(testlists)
 
-  render(<Modal><AddJobForm submitButton={mockSubmitButton} onSubmit={mockOnSubmit}/></Modal>)
+  const {debug} = render(<Modal><AddJobForm submitButton={mockSubmitButton} onSubmit={mockOnSubmit}/></Modal>)
 
   const submitButton = screen.getByRole('button', {  name: /submit/i})
   expect(submitButton).toBeDisabled()
@@ -51,12 +51,11 @@ test('AddJobForm has all fields and buttons and submits the form', async() => {
   userEvent.type( screen.getByRole('textbox', {name: /location/i}), location)
   userEvent.type( screen.getByRole('textbox', {name: /employment type/i}), employmentType)
   userEvent.type( screen.getByRole('textbox', {name: /notes/i}), notes)
-  userEvent.click(screen.getByRole('listbox'))
 
 userEvent.click(screen.getByRole('button', {name: /select a list/i}))
 const inPopover = within(screen.getByTestId('popover'))
-const listbox = inPopover.getByRole('listbox')
-userEvent.selectOptions(listbox, testlists[0].name)
+const listboxList = inPopover.getByRole('listbox',{hidden: true})
+userEvent.selectOptions(listboxList, testlists[0].name)
 
   expect(submitButton).not.toBeDisabled()
 
