@@ -19,8 +19,7 @@ function buildList(overrides) {
 }
 
 function buildItem(overrides) {
-    return {
-        _id: faker.random.uuid(),
+    const item =  {
         title: faker.name.jobTitle(),
         jobId: faker.random.uuid(),
         companyName: faker.company.companyName(),
@@ -31,6 +30,7 @@ function buildItem(overrides) {
         notes: faker.lorem.paragraph(),
         ...overrides
     }
+    return item
 }
 
 export {buildUser, buildItem, buildList}

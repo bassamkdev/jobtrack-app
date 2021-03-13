@@ -58,8 +58,8 @@ function ActionButtons({item, options}) {
 }
 
 function JobActionButton({job}) {
-  const items = useItems()
   const lists = useLists()
+  const items = useItems()
   const listedJob = items.find(item => item.jobId === job.id)
   const [mutate, {isError, isLoading, reset}] = useCreateListItem()
 
@@ -83,6 +83,7 @@ function JobActionButton({job}) {
     const list = lists.find(list => list._id === listedJob.list)
     return (
       <div
+        data-testid='list-status'
         css={{
           minWidth: 100,
           borderRadius: '3px',
