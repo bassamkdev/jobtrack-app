@@ -1,5 +1,6 @@
 /**@jsx jsx */
 import {jsx} from '@emotion/react'
+import * as React from 'react'
 import {FaTrash, FaTimesCircle} from 'react-icons/fa'
 
 import Tooltip from '@reach/tooltip'
@@ -61,12 +62,14 @@ function JobActionButton({job}) {
   const lists = useLists()
   const items = useItems()
   const listedJob = items.find(item => item.jobId === job.id)
+  const [listValue, setListValue] = React.useState('Add to list')
   const [mutate, {isError, isLoading, reset}] = useCreateListItem()
 
   function handleChange(value) {
     if (isError) {
       reset()
     } else {
+      setListValue(value)
       const {_id: listId} = lists.find(list => list.name === value)
       mutate({
         list: listId,
@@ -97,12 +100,46 @@ function JobActionButton({job}) {
       </div>
     )
   }
+  if(isLoading){
+    return(
+      <div
+      data-testid='list-status'
+      css={{
+        minWidth: 100,
+        borderRadius: '3px',
+        background: 'gray',
+        textAlign: 'center',
+        padding: `3px 5px`,
+        color: 'whitesmoke',
+      }}
+    >
+      <Spinner/>
+    </div>
+    )
+  }
+  if (isError) {
+    return(
+      <div
+      data-testid='list-status'
+      css={{
+        minWidth: 100,
+        borderRadius: '3px',
+        background: 'gray',
+        textAlign: 'center',
+        padding: `3px 5px`,
+        color: 'whitesmoke',
+      }}
+    >
+      <FaTimesCircle/>
+    </div>
+    )
+  }
   return (
     <Listbox
       items={lists}
       variant="transparent"
       listValue={
-        isLoading ? <Spinner /> : isError ? <FaTimesCircle /> : 'Add to list'
+        listValue
       }
       handleValueChange={handleChange}
     />

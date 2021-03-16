@@ -33,4 +33,16 @@ function buildItem(overrides) {
     return item
 }
 
-export {buildUser, buildItem, buildList}
+function buildJob(overrides) {
+    return {
+        title: faker.name.jobTitle(),
+        id: faker.random.uuid(),
+        company: faker.company.companyName(),
+        company_url: faker.internet.url(),
+        url: faker.internet.url(),
+        location: faker.address.city(),
+        how_to_apply: faker.lorem.paragraph()
+    }
+}
+
+export {buildUser, buildItem, buildList, buildJob}

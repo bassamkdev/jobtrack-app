@@ -3,6 +3,7 @@ import {jsx} from '@emotion/react'
 import * as React from 'react'
 
 const ToggleContext = React.createContext()
+
 function Toggle({children, on, setOn}) {
   const toggle = () => setOn(!on)
   return (
@@ -30,9 +31,13 @@ const ToggleOff = ({children}) => {
   return on ? null : children
 }
 
-const ToggleButton = ({children}) => {
+const ToggleButton = ({children, label}) => {
+  if (!label) {
+    throw new Error('a label prop have to be passed to ToggleButton component')
+  }
+
   const {toggle} = React.useContext(ToggleContext)
-  return <div onClick={() => toggle()}>{children}</div>
+  return <div onClick={toggle} aria-label={label}>{children}</div>
 }
 
 export {Toggle, ToggleOn, ToggleOff, ToggleButton}

@@ -53,7 +53,7 @@ function SideBar() {
       </LogoWrapper>
       <Toggle on={isAdding} setOn={setIsAdding}>
         <CreateListFormWrapper>
-          <ToggleButton>
+          <ToggleButton label='toggle create list form'>
             {isAdding ? (
               <TextToggleSwitch
                 label="close form"

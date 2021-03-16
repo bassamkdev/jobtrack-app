@@ -41,7 +41,7 @@ async function create({
     location = required('location'),
 
 }) {
-const id = hash(`${title}${userId}`)
+const id = hash(`${title}${userId}${companyName}`)
 if(items[id]){
     const error = new Error('the item with this name is already exists')
     error.status = 400
