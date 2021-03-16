@@ -39,14 +39,13 @@ function TopBar() {
   const {pathname} = useLocation()
   const {user, logout} = useAuth0()
   return (
-    <TopBarWrapper>
-      <TopBarTitle>{pathname.slice(1).replace(/&-&/g, ' ')}</TopBarTitle>
-
+    <TopBarWrapper aria-label='top bar'>
+      <TopBarTitle aria-label='page title'>{pathname.slice(1).replace(/&-&/g, ' ')}</TopBarTitle>
       <Menu>
-        <ProfileMenuButton css={{}} background={user.picture} />
+        <ProfileMenuButton background={user.picture} aria-label='profile menu button' />
         <ProfileMenuList>
-          <ProfileMenuItem onSelect={() => {}}>Profile</ProfileMenuItem>
-          <ProfileMenuItem onSelect={logout}>Sign Out</ProfileMenuItem>
+          <ProfileMenuItem aria-label='profile info' onSelect={() => {}}>Profile</ProfileMenuItem>
+          <ProfileMenuItem aria-label='sign out' onSelect={logout}>Sign Out</ProfileMenuItem>
         </ProfileMenuList>
       </Menu>
     </TopBarWrapper>
