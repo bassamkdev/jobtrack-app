@@ -39,7 +39,7 @@ test('AddJobForm has all fields and buttons and submits the form', async() => {
   const mockSubmitButton = <button variant="primary">Submit</button>
   useLists.mockReturnValue(testlists)
 
-  const {debug} = render(<Modal><AddJobForm submitButton={mockSubmitButton} onSubmit={mockOnSubmit}/></Modal>)
+  render(<Modal><AddJobForm submitButton={mockSubmitButton} onSubmit={mockOnSubmit}/></Modal>)
 
   const submitButton = screen.getByRole('button', {  name: /submit/i})
   expect(submitButton).toBeDisabled()
