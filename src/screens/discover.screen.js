@@ -68,7 +68,7 @@ function DiscoverJobsScreen() {
     })
   }
   return (
-    <DiscoverScreenWrapper>
+    <DiscoverScreenWrapper aria-label='discover jobs screen'>
       <SearchForm
         onSubmit={handleSubmit}
         isLoading={isLoading}
