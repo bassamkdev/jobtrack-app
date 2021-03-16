@@ -20,7 +20,7 @@ import {
 } from 'components/lib'
 import * as colors from '../styles/colors'
 
-function AddListForm({onSubmit, setIsActive}) {
+function AddListForm({onSubmit, setIsActive, label}) {
   const {isLoading, isError, error, run, reset} = useAsync()
   const [color, setColor] = React.useState('')
   const [listName, setlistName] = React.useState('')
@@ -45,8 +45,9 @@ function AddListForm({onSubmit, setIsActive}) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit}> 
       <div
+      aria-label={label}
         css={{
           paddingTop: '1em',
           display: 'flex',

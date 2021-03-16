@@ -331,14 +331,14 @@ function FullPageErrorFallback({error}) {
 
 function TextToggleSwitch({icon, label, text}) {
   return (
-    <Tooltip label="label">
+    <Tooltip label={label}>
       <div
         css={{
           color: colors.grayText,
           backgroundColor: 'none',
           cursor: 'pointer',
         }}
-        aria-label="label"
+        aria-label={label}
       >
         <div css={{display: 'inline-flex', alignItems: 'center'}}>
           {icon}

@@ -43,7 +43,7 @@ function SideBar() {
   const [handleCreateList] = useCreateList({throwOnError: true})
   const [isAdding, setIsAdding] = React.useState(false)
   return (
-    <SideBarWrapper>
+    <SideBarWrapper aria-label='side bar'>
       <LogoWrapper>
         <img
           src="logo.png"
@@ -56,13 +56,13 @@ function SideBar() {
           <ToggleButton label='toggle create list form'>
             {isAdding ? (
               <TextToggleSwitch
-                label="close form"
+                label="close create list form"
                 icon={<FaTimes />}
                 text="Close"
               />
             ) : (
               <TextToggleSwitch
-                label="create a new list"
+                label="open create list form"
                 icon={<FaPlus />}
                 text="Create a new list"
               />
@@ -70,6 +70,7 @@ function SideBar() {
           </ToggleButton>
           <ToggleOn>
             <AddListForm
+              label='add list form'
               onSubmit={handleCreateList}
               setIsActive={setIsAdding}
             />
