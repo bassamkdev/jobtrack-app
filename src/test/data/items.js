@@ -58,6 +58,13 @@ async function read(id) {
     return items[id]
 }
 
+async function update(id, updates) {
+    validateItem(id)
+    Object.assign(items[id], updates)
+    persist()
+    return read(id)
+  }
+
 async function remove(id) {
     validateItem(id)
     delete items[id]
@@ -106,4 +113,4 @@ function reset() {
     persist()
 }
 
-export {authorize, create, read, remove, readMany, reset}
+export {authorize, create, read, remove, readMany, reset, update}
