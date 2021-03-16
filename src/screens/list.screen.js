@@ -85,7 +85,7 @@ function ListScreen({listId}) {
       <ListScreenTopBar>
         <Modal>
           <ModalOpenButton>
-            <TopBarContentWrapper>
+            <TopBarContentWrapper aria-label='create a new job card'>
               Create a new job card
               <FaPlus css={{paddingLeft: '.5rem'}} />
             </TopBarContentWrapper>
