@@ -1,9 +1,7 @@
 /** @jsx jsx */
 import {jsx} from '@emotion/react'
-import * as React from 'react'
 import styled from '@emotion/styled/macro'
 import {useAuth0} from '@auth0/auth0-react'
-import {TextButton} from 'components/lib'
 import { Spacer } from "components/spacer/spacer";
 import { UnauthenticatedHeader } from 'components/unauthenticated-app/header'
 import UnstyledButton from 'components/unstyledButton'
@@ -178,21 +176,16 @@ const MainButton = styled(UnstyledButton)`
     box-shadow: -1px 2px 5px 0px hsl(0deg 100% 0% / 0.2);
   }
 `
-const MaxWidthWrapper = styled.div`
-  position: relative;
-  width: 100%;
-  max-width: 730px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 32px;
-  padding-right: 32px;
-`
+// const MaxWidthWrapper = styled.div`
+//   position: relative;
+//   width: 100%;
+//   max-width: 730px;
+//   margin-left: auto;
+//   margin-right: auto;
+//   padding-left: 32px;
+//   padding-right: 32px;
+// `
 
-const FeaturesWrapper = styled(MaxWidthWrapper)`
-  padding-bottom: 96px;
-  pointer-events: none;
-  max-width: 1400px;
-`
 const ImageWrapper = styled.div`
   width: 100%;
 `

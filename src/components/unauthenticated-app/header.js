@@ -1,6 +1,5 @@
 /* @jsx jsx */
 import {jsx} from '@emotion/react'
-import * as React from 'react'
 import styled from '@emotion/styled/macro'
 import {Logo} from "components/logo/logo.component";
 import * as COLORS from 'styles/colors'

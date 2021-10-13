@@ -93,7 +93,7 @@ function CreateJobCardButton({job, list}) {
 
 function UpdateJobCardButton({item, list}) {
   const lists = useLists()
-  const [listValue, setListValue] = React.useState(list.name)
+  // const [listValue, setListValue] = React.useState(list.name)
   const [update, {isError, isLoading, reset}] = useUpdateListItem()
 
   function handleChange(value) {
@@ -101,7 +101,7 @@ function UpdateJobCardButton({item, list}) {
       reset()
     }
     const {_id: newListId} = lists.find(list => list.name === value)
-    setListValue(value)
+    // setListValue(value)
     update({id: item._id, list: newListId})
   }
 
