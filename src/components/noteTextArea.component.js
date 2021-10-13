@@ -6,13 +6,15 @@ import * as React from 'react'
 import debounceFn from 'debounce-fn'
 import {useUpdateListItem} from 'utils/item'
 import {ErrorMessage, Spinner, Textarea} from './lib'
+import { WEIGHTS } from "../styles/constants";
+
 
 const Label = styled.label({
   display: 'inline-block',
   marginRight: '10px',
   marginTop: '1rem',
   marginBottom: '0.5rem',
-  fontWeight: 'bold',
+  fontWeight: WEIGHTS.bold,
 })
 
 function NotesTextarea({item}) {
@@ -43,7 +45,7 @@ function NotesTextarea({item}) {
         id="notes"
         defaultValue={item.notes}
         onChange={handleNotesChange}
-        css={{width: '100%', minHeight: '300px'}}
+        // css={{width: '100%', minHeight: '300px'}}
       />
     </React.Fragment>
   )

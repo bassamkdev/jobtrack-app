@@ -10,7 +10,9 @@ function FetchProvider({children}) {
 
   const getAccessToken = React.useCallback(async () => {
     try {
-      const token = await getAccessTokenSilently()
+
+       const token = await getAccessTokenSilently()
+
       setAccessToken(token)
     } catch (err) {
       console.log(err)

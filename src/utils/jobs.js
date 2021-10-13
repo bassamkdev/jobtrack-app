@@ -1,7 +1,6 @@
 import * as React from 'react'
 import {useQuery, queryCache} from 'react-query'
 import bookPlaceholderSvg from 'assets/book-placeholder.svg'
-// import {useFetchContext} from 'context/fetch-context'
 import {useFetchContext} from 'context/fetch-context'
 
 const loadingJob = {
@@ -30,6 +29,7 @@ const getJobSearchConfig = (authAxios, query) => ({
   config: {
     onSuccess(result) {
       const {data: jobs} = result
+      if(jobs.error) return
       for (const job of jobs) {
         queryCache.setQueryData(['job', {jobId: job.id}], job, jobQueryConfig)
       }

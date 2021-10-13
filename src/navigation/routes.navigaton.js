@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {Route} from 'react-router-dom'
+import {Route, Switch} from 'react-router-dom'
 
 import {useLists} from 'utils/list'
 import {DiscoverJobsScreen} from 'screens/discover.screen'
@@ -10,6 +10,7 @@ function AppRoutes() {
   const lists = useLists()
   return (
     <>
+    <Switch>
       <Route path="/discover">
         <DiscoverJobsScreen />
       </Route>
@@ -20,9 +21,10 @@ function AppRoutes() {
             </Route>
           ))
         : null}
-      <Route path="*" exact>
+      <Route path="*">
         <NotFoundScreen />
       </Route>
+    </Switch>
     </>
   )
 }

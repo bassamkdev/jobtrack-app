@@ -1,48 +1,46 @@
 /** @jsx jsx */
 import {jsx} from '@emotion/react'
 import styled from '@emotion/styled/macro'
-import * as mq from 'styles/media-queries'
 import {SideBar} from 'layout/sidebar.layout'
 import {TopBar} from './layout/topbar.layout'
 import {AppRoutes} from './navigation/routes.navigaton'
+import { QUERIES } from 'styles/constants'
 
 const AuthenticatedAppWrapper = styled.div({
-  margin: '0 auto',
-  width: '100%',
-  display: 'grid',
-  gridTemplateColumns: '1fr 3fr',
-  [mq.small]: {
-    gridTemplateColumns: '1fr',
-    gridTemplateRows: 'auto',
-    width: '100%',
-  },
-})
-
-const AppMainSection = styled.main({
-  width: '100%',
-  height: '100vh',
-  position: 'relative',
   display: 'flex',
-  flexDirection: 'column',
+  flexDirection: 'row-reverse',
+  alignItems: 'flex-start',
+  height: '100%'
 })
 
-const ScreensWrapper = styled.div({
+const LeftColumn = styled.div`
+  flex-Basis: 320px;
+  height: 100%;
+  @media ${QUERIES.phoneAndSmaller}{
+    display: none;
+  }
+`
+
+const Main = styled.main({
+  flex: '1',
   height: '100%',
-  maxHeight: '100%',
-  width: '100%',
   overflow: 'hidden',
+  paddingBottom: '32px'
 })
+
 
 function AuthenticatedApp() {
   return (
     <AuthenticatedAppWrapper>
-      <SideBar />
-      <AppMainSection>
+      <Main>
+        {/* <Spacer axis={'vertical'} size={24}/> */}
         <TopBar />
-        <ScreensWrapper>
-          <AppRoutes />
-        </ScreensWrapper>
-      </AppMainSection>
+        {/* <Spacer axis='vertical' size={24}/> */}
+        <AppRoutes />
+      </Main>
+      <LeftColumn>
+        <SideBar />
+      </LeftColumn>
     </AuthenticatedAppWrapper>
   )
 }

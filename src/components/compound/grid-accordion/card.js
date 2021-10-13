@@ -14,6 +14,7 @@ import {useUpdateListItem} from 'utils/item'
 import {useAccordionContext} from './grid-accordion'
 import {Listbox} from '../../listbox.component'
 import {useList, useLists} from 'utils/list'
+import { WEIGHTS } from 'styles/constants'
 
 const BasicCard = styled.div(
   {
@@ -62,7 +63,7 @@ const Footer = styled.div({
 
 const Title = styled.a({
   fontsize: '1.17em',
-  fontWeight: 'bold',
+  fontWeight: WEIGHTS.bold,
   textDecoration: 'none',
   color: colors.text,
   ':hover,:active': {
@@ -83,7 +84,6 @@ const IconsBlock = styled.div({
 
 const IconsTextBlock = styled.div({
   paddingLeft: '10px',
-  fontFamily: 'lato, sans-serif',
   color: colors.text,
   display: 'flex',
   flexDirection: 'column',

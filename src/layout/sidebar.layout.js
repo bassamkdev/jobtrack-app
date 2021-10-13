@@ -1,85 +1,58 @@
 /** @jsx jsx */
 import {jsx} from '@emotion/react'
 import styled from '@emotion/styled/macro'
-import * as React from 'react'
-import {FaPlus, FaTimes} from 'react-icons/fa'
 
-import {useCreateList} from 'utils/list'
-import {
-  Toggle,
-  ToggleButton,
-  ToggleOn,
-} from 'components/compound/toggle.component'
-import {AddListForm} from '../components/form.component'
-import {TextToggleSwitch} from 'components/lib'
+import {Logo} from "../components/logo/logo.component";
 import {Lists} from 'components/lists.component'
 import * as colors from 'styles/colors'
+import { Spacer } from 'components/spacer/spacer'
+import { CreateNewList } from 'components/createNewList'
 
 const SideBarWrapper = styled.aside({
-  position: 'relative',
-  height: '100vh',
-  overflow: 'scroll',
-  background: colors.garyBlue,
+  height: '100%',
   display: 'flex',
   flexDirection: 'column',
-  alignItems: 'center',
-  justifyContent: 'flex-start',
-})
-
-const LogoWrapper = styled.div({
-  borderBottom: `1px solid #3f4e5c`,
-  width: '100%',
-  padding: `1em 0 1em 1em `,
-})
-
-const CreateListFormWrapper = styled.div({
-  width: '100%',
-  padding: '16px 24px',
-  borderBottom: `1px solid #3f4e5c`,
-  background: `#415464`,
+  alignItems: 'flex-start',
+  overflow: 'auto',
+  background: 'smokewhite',
+  padding: '32px 0',
+  borderRight: `1px solid ${colors.gray20}`
 })
 
 function SideBar() {
-  const [handleCreateList] = useCreateList({throwOnError: true})
-  const [isAdding, setIsAdding] = React.useState(false)
   return (
     <SideBarWrapper aria-label='side bar'>
       <LogoWrapper>
-        <img
-          src="logo.png"
-          alt="jobtrack logo"
-          css={{height: '4em', width: 'auto'}}
-        />
+        <Logo/>
       </LogoWrapper>
-      <Toggle on={isAdding} setOn={setIsAdding}>
-        <CreateListFormWrapper>
-          <ToggleButton label='toggle create list form'>
-            {isAdding ? (
-              <TextToggleSwitch
-                label="close create list form"
-                icon={<FaTimes />}
-                text="Close"
-              />
-            ) : (
-              <TextToggleSwitch
-                label="open create list form"
-                icon={<FaPlus />}
-                text="Create a new list"
-              />
-            )}
-          </ToggleButton>
-          <ToggleOn>
-            <AddListForm
-              label='add list form'
-              onSubmit={handleCreateList}
-              setIsActive={setIsAdding}
-            />
-          </ToggleOn>
-        </CreateListFormWrapper>
-      </Toggle>
-      <Lists />
+      <Spacer axis={'vertical'} size={160}/>
+      <ListsWrapper>
+        <Lists />
+      </ListsWrapper>
+      <Spacer axis='vertical' size={48}/>
+      <CreateListWrapper>
+        <CreateNewList/>
+      </CreateListWrapper>
+      <Spacer axis={'vertical'} size={20}/>
     </SideBarWrapper>
   )
 }
 
+const LogoWrapper = styled.div`
+  padding: 0 32px;
+`
+const CreateListWrapper = styled.div`
+  padding: 0 30px;
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+`
+const ListsWrapper = styled.div`
+  padding-left: 32px;
+  width: 100%;
+  max-height: 600px;
+  overflow: auto;
+`
 export {SideBar}

@@ -3,7 +3,7 @@ import {jsx} from '@emotion/react'
 import styled from '@emotion/styled/macro'
 import * as colors from 'styles/colors'
 import * as mq from 'styles/media-queries'
-import {JobActionButton} from 'components/action-buttons.component'
+import {CreateJobCardButton} from 'components/action-buttons.component'
 
 const JobInfoWrapper = styled.div({
   width: '100%',
@@ -22,9 +22,9 @@ const ContentWrapper = styled.div({
 })
 
 const JobTitle = styled.a({
-  fontSize: '1.25em',
+  fontSize: '1.15rem',
   margin: '0',
-  color: colors.indigo,
+  color: 'black',
   textDecoration: 'none',
   ':hover,:focus': {
     textDecoration: 'none',
@@ -96,7 +96,7 @@ function JobInfo({job}) {
           bottom: 10,
         }}
       >
-        <JobActionButton job={job} />
+        <CreateJobCardButton job={job} />
       </div>
     </JobInfoWrapper>
   )

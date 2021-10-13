@@ -33,7 +33,7 @@ function useListItem(id) {
 
 function useRemoveListItem(options) {
   const {authAxios} = useFetchContext()
-  return useMutation(({itemId}) => authAxios.delete(`item/${itemId}`), {
+  return useMutation(({id}) => authAxios.delete(`item/${id}`), {
     onSettled: () => queryCache.invalidateQueries('items'),
     ...options,
   })

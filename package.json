@@ -77,6 +77,7 @@
     "eslint-plugin-cypress": "^2.11.2",
     "faker": "^5.4.0",
     "jest-axe": "^4.1.0",
+    "jsonwebtoken": "^8.5.1",
     "msw": "^0.27.0",
     "prettier": "^2.2.1",
     "start-server-and-test": "^1.12.0",

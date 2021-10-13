@@ -2,14 +2,14 @@
 import {jsx} from '@emotion/react'
 import * as React from 'react'
 import {FaTrash, FaTimesCircle} from 'react-icons/fa'
-
 import Tooltip from '@reach/tooltip'
-import {useItems, useRemoveListItem, useCreateListItem} from 'utils/item'
+import {useRemoveListItem, useCreateListItem, useUpdateListItem} from 'utils/item'
 import * as colors from 'styles/colors'
 import {useAsync} from 'utils/hooks'
 import {CircleButton, Spinner} from 'components/lib'
 import {useLists} from 'utils/list'
 import {Listbox} from 'components/listbox.component'
+import { Icon } from "components/icon";
 
 function TooltipButton({label, highlight, onClick, icon, ...rest}) {
   const {isLoading, isError, error, run, reset} = useAsync()
@@ -58,17 +58,14 @@ function ActionButtons({item, options}) {
   )
 }
 
-function JobActionButton({job}) {
+function CreateJobCardButton({job, list}) {
   const lists = useLists()
-  const items = useItems()
-  const listedJob = items.find(item => item.jobId === job.id)
-  const [listValue, setListValue] = React.useState('Add to list')
+  const [listValue, setListValue] = React.useState(list?.name || 'Add to list')
   const [mutate, {isError, isLoading, reset}] = useCreateListItem()
-
   function handleChange(value) {
     if (isError) {
       reset()
-    } else {
+    } 
       setListValue(value)
       const {_id: listId} = lists.find(list => list.name === value)
       mutate({
@@ -79,71 +76,45 @@ function JobActionButton({job}) {
         url: job.company_url || job.url,
         location: job.location,
         notes: job.how_to_apply,
+        employmentType: job.type 
       })
-    }
-  }
-  if (listedJob) {
-    const list = lists.find(list => list._id === listedJob.list)
-    return (
-      <div
-        data-testid='list-status'
-        css={{
-          minWidth: 100,
-          borderRadius: '3px',
-          background: list.color,
-          textAlign: 'center',
-          padding: `3px 5px`,
-          color: 'whitesmoke',
-        }}
-      >
-        {list.name}
-      </div>
-    )
-  }
-  if(isLoading){
-    return(
-      <div
-      data-testid='list-status'
-      css={{
-        minWidth: 100,
-        borderRadius: '3px',
-        background: 'gray',
-        textAlign: 'center',
-        padding: `3px 5px`,
-        color: 'whitesmoke',
-      }}
-    >
-      <Spinner/>
-    </div>
-    )
-  }
-  if (isError) {
-    return(
-      <div
-      data-testid='list-status'
-      css={{
-        minWidth: 100,
-        borderRadius: '3px',
-        background: 'gray',
-        textAlign: 'center',
-        padding: `3px 5px`,
-        color: 'whitesmoke',
-      }}
-    >
-      <FaTimesCircle/>
-    </div>
-    )
   }
   return (
     <Listbox
       items={lists}
       variant="transparent"
-      listValue={
-        listValue
-      }
+      listValue={listValue}
       handleValueChange={handleChange}
+      isLoading={isLoading}
+      isError={isError}
     />
   )
 }
 
-export {ActionButtons, TooltipButton, JobActionButton}
+function UpdateJobCardButton({item, list}) {
+  const lists = useLists()
+  const [listValue, setListValue] = React.useState(list.name)
+  const [update, {isError, isLoading, reset}] = useUpdateListItem()
+
+  function handleChange(value) {
+    if (isError) {
+      reset()
+    }
+    const {_id: newListId} = lists.find(list => list.name === value)
+    setListValue(value)
+    update({id: item._id, list: newListId})
+  }
+
+  return (
+    <Listbox
+    items={lists}
+    visualContent={<Icon id='list' size='24'/>}
+    handleValueChange={handleChange}
+    isLoading={isLoading}
+    isError={isError}
+  />
+  )
+}
+
+
+export {ActionButtons, TooltipButton, CreateJobCardButton, UpdateJobCardButton}

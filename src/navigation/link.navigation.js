@@ -1,38 +1,34 @@
 /** @jsx jsx */
 import {jsx} from '@emotion/react'
-import {Link as RouterLink, useRouteMatch as useMatch} from 'react-router-dom'
+import styled from '@emotion/styled/macro'
+import {Link, useRouteMatch as useMatch} from 'react-router-dom'
+import { WEIGHTS } from 'styles/constants'
 
-import * as colors from 'styles/colors'
-
-function NavLink(props) {
+function NavLink({list, ...props}) {
   const match = useMatch(props.to)
   return (
-    <RouterLink
-      css={[
-        {
-          display: 'block',
-          background: 'none',
-          padding: '14px 15px 14px 10px',
-          margin: '8px 0',
-          width: '100%',
-          color: colors.grayText,
-          borderRadius: '34px 0 0 34px',
-          borderLeft: '5px solid transparent',
-          ':hover': {
-            textDecoration: 'none',
-            color: colors.gray20,
-          },
-        },
-        match
-          ? {
-              background: props.list?.color || colors.skyBlue,
-              color: colors.gray20,
-            }
-          : null,
-      ]}
-      {...props}
-    />
+    <Wrapper match={match} color={list?.color || null}>
+      <RouterLink list={list} {...props}/>
+    </Wrapper>
   )
 }
+
+const Wrapper = styled.div`
+  flex: 1;
+  border-right: ${(props) => props.match ? `4px solid ${props.color || 'skyblue'}` : null};
+  color: ${({match}) => match ? 'hsl(220deg 5% 20%)' : 'hsl(220deg 5% 70%)'}
+`
+
+const RouterLink = styled(Link)`
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: ${WEIGHTS.light};
+  text-transform: capitalize;
+  color: inherit;
+  line-height: 3;
+  &:hover{
+    color: hsl(220deg 5% 50%);
+  }
+`
 
 export {NavLink}

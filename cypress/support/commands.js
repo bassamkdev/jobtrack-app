@@ -1,3 +1,4 @@
+import jwt from 'jsonwebtoken'
 // ***********************************************
 // This example commands.js shows you how to
 // create various custom commands and overwrite
@@ -23,7 +24,7 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
-Cypress.Commands.add('login', (appState = {targetUrl: '/'}) => {
+Cypress.Commands.add('login', () => {
     cy.log({
         name: 'loginViaAuth0',
     })
@@ -43,36 +44,33 @@ Cypress.Commands.add('login', (appState = {targetUrl: '/'}) => {
     }
 
     cy.request(options).then(({body}) => {
-        const {access_token, expires_in, id_token} = body
-        const auth0State = {
-            nonce: '',
-            state: 'some-random-state'
-          };
-        cy.server()
-        cy.route({
-            url: 'oauth/token',
-            method: 'POST',
-            response: {
-                access_token: access_token,
-                id_token: id_token,
-                scope: "openid profile email",
-                expires_in: expires_in,
-                token_type: 'Bearer'
-            }
-        })
-        console.log({access_token, expires_in, id_token})
-        const stateId = 'test'
-        cy.setCookie(
-            `a0.spajs.txs.${stateId}`,
-            encodeURIComponent(JSON.stringify({
-                "appState": appState,
-                "scope": "openid profile email",
-                "audience": "default",
-                "redirect_uri": "http://localhost:3000"
-            }))
-        )
-        .then(() => {
-            cy.visit(`/callback#access_token=${access_token}&scope=openid&id_token=${id_token}&expires_in=${expires_in}&token_type=Bearer&state=${auth0State.state}`)
-        })
+        const claims = jwt.decode(body.id_token)
+        const {nickname, name, picture, updated_at, email, email_verified, sub, exp} = claims
+        const item = {
+            body: {
+                ...body,
+                decodedToken: {
+                    claims,
+                    user: {
+                        nickname,
+                        name,
+                        picture,
+                        updated_at,
+                        email,
+                        email_verified,
+                        sub
+                    },
+                    audience: Cypress.env('auth_audience'),
+                    client_id: Cypress.env('auth_client_id')
+                }
+            },
+            expiresAt: exp
+        }
+
+        window.localStorage.setItem('auth0Cypress', JSON.stringify(item))
+        cy.setCookie('auth0.is.authenticated', 'true')
+        cy.visit(`/`)
+           
+
     })
 })

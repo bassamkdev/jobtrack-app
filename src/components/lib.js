@@ -3,6 +3,7 @@ import {jsx, keyframes} from '@emotion/react'
 import styled from '@emotion/styled/macro'
 import * as colors from 'styles/colors'
 import * as mq from 'styles/media-queries'
+import { WEIGHTS } from "../styles/constants";
 import {MenuList, MenuButton, MenuItem} from '@reach/menu-button'
 import {Tooltip} from '@reach/tooltip'
 import {Link as RouterLink} from 'react-router-dom'
@@ -123,12 +124,12 @@ const textButtonBase = {
 const textButtonVariants = {
   large: {
     fontSize: '20px',
-    fontWeight: 'bold',
+    fontWeight: WEIGHTS.bold,
     borderBottom: `2px solid ${colors.grayText}`,
   },
   small: {
     fontSize: '1rem',
-    fontWeight: 'light',
+    fontWeight: WEIGHTS.light,
     borderBottom: `1px solid ${colors.grayText}`,
   },
 }
@@ -245,7 +246,13 @@ const inputStyles = {
   padding: '8px 12px',
 }
 const Input = styled.input({borderRadius: '3px'}, inputStyles)
-const Textarea = styled.textarea(inputStyles)
+const Textarea = styled.textarea`
+  border: 1px solid hsl(240deg 0% 70%);
+  border-radius: 4px;
+  height: 36px;
+  padding: 16px 16px;
+  flex: 1;
+`
 
 const JobListUl = styled.ul({
   listStyle: 'none',

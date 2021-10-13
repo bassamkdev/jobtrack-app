@@ -2,7 +2,8 @@
 import {jsx} from '@emotion/react'
 import * as React from 'react'
 import VisuallyHidden from '@reach/visually-hidden'
-import {CircleButton, Dialog} from '../lib'
+import { Tooltip } from "@reach/tooltip";
+import {CircleButton} from '../lib'
 
 const callAll = (...fns) => (...args) => fns.forEach(fn => fn && fn(...args))
 
@@ -10,7 +11,8 @@ const ModalContext = React.createContext()
 
 function Modal(props) {
   const [isOpen, setIsOpen] = React.useState(false)
-  return <ModalContext.Provider value={[isOpen, setIsOpen]} {...props} />
+  let value = [isOpen, setIsOpen]
+  return <ModalContext.Provider value={value} {...props} />
 }
 
 function ModalDismissButton({children: child}) {
@@ -20,18 +22,29 @@ function ModalDismissButton({children: child}) {
   })
 }
 
-function ModalOpenButton({children: child}) {
+function ModalOpenButton({children: child, isTooltip, label}) {
   const [, setIsOpen] = React.useContext(ModalContext)
+  if (isTooltip) {
+    return(
+      <Tooltip label={label}>
+        {
+          React.cloneElement(child, {
+            onClick: callAll(() => setIsOpen(true), child.props.onClick),
+          })
+        }
+      </Tooltip>
+    )
+  }
   return React.cloneElement(child, {
     onClick: callAll(() => setIsOpen(true), child.props.onClick),
   })
 }
 
-function ModalContentBase(props) {
+function ModalContentBase({children: child}) {
   const [isOpen, setIsOpen] = React.useContext(ModalContext)
-  return (
-    <Dialog isOpen={isOpen} onDismiss={() => setIsOpen(false)} {...props} />
-  )
+  return React.cloneElement(child, {
+    isOpen: isOpen, onDismiss: () => setIsOpen(false) 
+  })
 }
 
 function ModalContents({title, children, ...props}) {
@@ -56,4 +69,4 @@ function ModalContents({title, children, ...props}) {
   )
 }
 
-export {Modal, ModalDismissButton, ModalOpenButton, ModalContents, ModalContext}
+export {Modal, ModalDismissButton, ModalOpenButton, ModalContents, ModalContext, ModalContentBase}

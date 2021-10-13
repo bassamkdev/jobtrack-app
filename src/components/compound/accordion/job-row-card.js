@@ -7,7 +7,7 @@ function JobRowCard({children}) {
     <div
       css={{
         border: 'none',
-        borderRadius: '6px',
+        borderRadius: '16px',
         boxShadow: `0 4px 10px 0 rgba(0, 0, 0, 0.04)`,
         backgroundColor: `#fff`,
         maxWidth: '950px',
@@ -56,3 +56,4 @@ function JobRowCardBody({children, ...props}) {
 }
 
 export {JobRowCard, JobRowCardHeader, JobRowCardBody}
+ 
